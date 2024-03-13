@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
   final VoidCallback onClick;
+  final VoidCallback? onLongPress;
   final String label;
   final Color color;
   final double? width;
@@ -15,6 +16,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     Key? key,
     required this.onClick,
+    this.onLongPress,
     required this.label,
     required this.color,
     this.width = 125,
@@ -33,6 +35,7 @@ class CustomButton extends StatelessWidget {
       height: height,
       margin: margin,
       child: ElevatedButton(
+        onLongPress: onLongPress??(){},
         onPressed: onClick,
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(color),

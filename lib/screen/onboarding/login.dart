@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:result_ease/screen/lecture/home_lecture.dart';
 import 'package:result_ease/screen/onboarding/registration.dart';
+import 'package:result_ease/screen/student/home_student.dart';
 import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/custom_button.dart';
 import 'package:result_ease/widgets/custom_text_field.dart';
@@ -41,6 +42,18 @@ class _LoginState extends State<Login> {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const HomeLecture()));
   }
+
+  
+  void _onLongPress() async {
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const StudentHome()));
+  }
+
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +134,7 @@ class _LoginState extends State<Login> {
                               ? const CircularProgressIndicator()
                               : CustomButton(
                                   onClick: _login,
+                                  onLongPress: _onLongPress,
                                   label: "LOGIN",
                                   color: AppColors.buttonColorDark),
                     

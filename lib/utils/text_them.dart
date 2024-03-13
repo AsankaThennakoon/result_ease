@@ -32,6 +32,17 @@ class TextThemeData {
       fontWeight: FontWeight.w700,
       fontSize: 14,
     ),
+
+     headline6: TextStyle(
+      color: AppColors.backgroundColorWhite, // For body
+      fontWeight: FontWeight.w700,
+      fontSize: 14,
+    ),
+    headlineLarge: TextStyle(
+      color: AppColors.backgroundColorWhite, // For body
+      fontWeight: FontWeight.w700,
+      fontSize: 30,
+    ),
     // labelMedium: const TextStyle(
     //   color: AppColors.labelMediumColor, // for text field
     //   fontWeight: FontWeight.w500,

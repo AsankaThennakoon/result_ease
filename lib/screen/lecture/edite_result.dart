@@ -118,6 +118,7 @@ class _EditeResultState extends State<EditeResult> {
                     ),
                     Form(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                         
                           

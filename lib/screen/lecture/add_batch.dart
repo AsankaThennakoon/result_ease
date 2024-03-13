@@ -115,6 +115,7 @@ class _AddNewBatchState extends State<AddNewBatch> {
                     ),
                     Form(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           
                          
