@@ -1,74 +1,33 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:result_ease/widgets/custom_drop_down_item.dart';
+import 'package:result_ease/widgets/custom_file_upload.dart';
 
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_back_button.dart';
 import '../../widgets/custom_button.dart';
-import '../../widgets/custom_text_field.dart';
-import '../../widgets/image_input.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({super.key});
+class AddResults extends StatefulWidget {
+  const AddResults({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<AddResults> createState() => _AddResultsState();
 }
 
-class _ProfileState extends State<Profile> {
-  final TextEditingController _universityName = TextEditingController();
-  final TextEditingController _faculty = TextEditingController();
-  final TextEditingController _department = TextEditingController();
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
-  final TextEditingController _confirmePassword = TextEditingController();
+class _AddResultsState extends State<AddResults> {
+  
+  final TextEditingController _year = TextEditingController();
+  final TextEditingController _batch = TextEditingController();
+  final TextEditingController _semester = TextEditingController();
 
-  File? _pickedProfilePic;
-  void _selectedProfilePic(File profilePic) {
-    _pickedProfilePic = profilePic;
-  }
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      ),
-    );
-  }
-
-  void _showSuccessDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Saved successfully !'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      ),
-    );
-  }
-
+  final List<String> _yearList=["2016","2017"];
+  final List<String> _batchList=["COM","PS"];
+  final List<String> _semesterList=["1.1","1.2"];
+ 
   void _save() async {}
   void _cancle() async {}
-
   @override
    Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -125,44 +84,13 @@ class _ProfileState extends State<Profile> {
                     ),
                     Form(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          ImageInput(_selectedProfilePic, 'Profile PIC'),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextField(
-                              labelName: "University",
-                              controller: _universityName),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextField(
-                              labelName: "Faculty", controller: _faculty),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextField(
-                              labelName: "Department", controller: _department),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextField(
-                              labelName: "Email", controller: _email),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextField(
-                              labelName: "Password", controller: _password),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextField(
-                              labelName: "Confirm Password",
-                              controller: _confirmePassword),
+
+                          CustomDropDownItem(controller: _year,labelName: "Selected Year",listValues: _yearList,),
+                          CustomDropDownItem(controller: _batch,labelName: "Selected Batch",listValues: _batchList,),
+                          CustomDropDownItem(controller: _semester,labelName: "Selected Semester",listValues: _semesterList,),
+                          CustomFileUploadField(labelName: "Upload Result Excel",controller: _year,),
                           const SizedBox(
                             height: 10,
                           ),
@@ -198,5 +126,4 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
 }

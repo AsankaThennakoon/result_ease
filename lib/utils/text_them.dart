@@ -1,30 +1,46 @@
+
 import 'package:flutter/material.dart';
 import 'package:result_ease/utils/app_colors.dart';
 
 class TextThemeData {
-  static TextTheme textTheme = TextTheme(
-    bodyText1: const TextStyle(
+  static  TextTheme textTheme = const TextTheme(
+    bodyText1: TextStyle(
       color: Colors.black87, // For highly readable body text
     ),
-    headline1: const TextStyle(
+    headline1: TextStyle(
       color: Color(0xFF1D3557), // For headings or titles
       fontWeight: FontWeight.bold,
       fontSize: 48,
     ),
-    bodyMedium: const TextStyle(
-      color: AppColors.bodyMediumColor, // For body
-      fontWeight: FontWeight.w300,
-      fontSize: 20,
+    headline2: TextStyle(
+      color: AppColors.buttonColorDark, // For body
+      fontWeight: FontWeight.w900,
+      fontSize: 24,
     ),
-    labelMedium: const TextStyle(
-      color: AppColors.labelMediumColor, // for text field
-      fontWeight: FontWeight.w300,
-      fontSize: 20,
-    ),
-    button: const TextStyle(
-// for button
+    headline3: TextStyle(
+      color: AppColors.backgroundColorWhite, // For body
       fontWeight: FontWeight.w900,
       fontSize: 20,
     ),
+    headline4: TextStyle(
+      color: AppColors.buttonColorDark, // For body
+      fontWeight: FontWeight.w900,
+      fontSize: 20,
+    ),
+    headline5: TextStyle(
+      color: AppColors.buttonColorDark, // For body
+      fontWeight: FontWeight.w700,
+      fontSize: 14,
+    ),
+    // labelMedium: const TextStyle(
+    //   color: AppColors.labelMediumColor, // for text field
+    //   fontWeight: FontWeight.w500,
+    //   fontSize: 20,
+    // ),
+    // button: const TextStyle(
+
+    //   fontWeight: FontWeight.w900,// for button
+    //   fontSize: 20,
+    // ),
   );
 }

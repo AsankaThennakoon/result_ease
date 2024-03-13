@@ -130,14 +130,10 @@ class _LoginState extends State<Login> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
+                               Text(
                                 "Did not have an account?  ",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15,
-                                ),
+                                style: Theme.of(context).textTheme.bodyMedium
                               ),
                               InkWell(
                                 hoverColor: Colors.black,

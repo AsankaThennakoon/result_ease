@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:result_ease/screen/onboarding/login.dart';
 import 'package:result_ease/utils/app_colors.dart';
+import 'package:result_ease/widgets/custom_back_button.dart';
 import 'package:result_ease/widgets/custom_button.dart';
 import 'package:result_ease/widgets/custom_text_field.dart';
 
@@ -66,29 +67,11 @@ class _RegistrationState extends State<Registration> {
           child: SafeArea(
               child: Stack(
             children: [
-              Positioned(
-                top: 15,
-                left: 20,
-                child: InkWell(
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 10),
-                    width: 40,
-                    height: 40,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        )),
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: AppColors.buttonColor,
-                    ),
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              )
+              CustomBackButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ],
           ))),
       backgroundColor: AppColors.backgroundColor,
@@ -187,12 +170,17 @@ class _RegistrationState extends State<Registration> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-
-                              CustomButton(onClick: _signUp, label: "REGISTER", color: AppColors.buttonColorDark),
-                             
-                              const SizedBox(width: 10,),
-                               CustomButton(onClick: _cancle, label: "CANCEL", color: AppColors.accentColor),
-                             
+                              CustomButton(
+                                  onClick: _signUp,
+                                  label: "REGISTER",
+                                  color: AppColors.buttonColorDark),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              CustomButton(
+                                  onClick: _cancle,
+                                  label: "CANCEL",
+                                  color: AppColors.accentColor),
                             ],
                           ),
                           const SizedBox(
@@ -201,15 +189,10 @@ class _RegistrationState extends State<Registration> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                "Already have an account?  ",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: AppColors.headingTextColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15,
-                                ),
-                              ),
+                              Text("Already have an account?  ",
+                                  textAlign: TextAlign.center,
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
                               InkWell(
                                 hoverColor: Colors.black,
                                 focusColor: Colors.grey,

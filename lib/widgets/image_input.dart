@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspaths;
+import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/custom_button.dart';
 
 class ImageInput extends StatefulWidget {
@@ -40,46 +41,56 @@ class _ImageInputState extends State<ImageInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Stack(
       children: [
         CircleAvatar(
-            radius: 60,
+            backgroundColor: AppColors.backgroundColorWhite,
+            radius: 70,
             backgroundImage: _storedImage != null
                 ? FileImage(
                     File(_storedImage!.path),
                   )
-                : const NetworkImage('https://via.placeholder.com/150')
-                    as ImageProvider),
-        const SizedBox(
-          width: 10,
+                : Image.asset(
+                    "assets/images/profile.png",
+                 
+                    fit: BoxFit.contain,
+                  ).image),
+
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              color: AppColors.buttonColorDark,
+              borderRadius: BorderRadius.circular(
+                  17), // Half of width or height to make it circular
+            ),
+            child: IconButton(
+              onPressed: _takePicture,
+              icon: Icon(
+                Icons.camera_alt_outlined,
+                color: Colors.white, // Set icon color to white
+                size: Theme.of(context)
+                    .textTheme
+                    .button!
+                    .fontSize!, // Match icon size with default button text size
+              ),
+              padding: EdgeInsets.zero, // Remove padding
+            ),
+          ),
         ),
 
-        Expanded(
-          child: CustomButton(
-            onClick: _takePicture,
-            label: widget.title,
-            color: Colors
-                .transparent, // Set color to transparent to avoid background color
-            padding: EdgeInsets.zero, // Remove padding
-            fontSize: Theme.of(context)
-                .textTheme
-                .button!
-                .fontSize!, // Match button text size with default button text size
-            fontWeight: Theme.of(context)
-                .textTheme
-                .button!
-                .fontWeight!, // Match button text weight with default button text weight
-          ),
-        )
+        Positioned(
+          top:50,
+        
+            child: Text(
+          "Logo",
+          style: Theme.of(context).textTheme.headline3,
+        ))
 
-        // Expanded(
-        //   child: FlatButton.icon(
-        //     onPressed: _takePicture,
-        //     icon: const Icon(Icons.camera_alt_outlined),
-        //     label: Text(widget.title),
-        //     textColor: Theme.of(context).primaryColor,
-        //   ),
-        // )
+      
       ],
     );
   }

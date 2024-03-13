@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   // Text colors
   static const Color bodyTextColor = Color(0xFF1D3557); // Dark blue
+  static const Color bodyMediumColor = Color(0xFF1D3557); // Dark blue
   static const Color headingTextColor = Color(0xFF457B9D); // Medium blue
   static const Color labelMediumColor = Color(0xFF457B9D); // Medium blue
 
