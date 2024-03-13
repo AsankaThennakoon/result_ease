@@ -3,8 +3,10 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/parser.dart';
+import 'package:result_ease/screen/lecture/add_batch.dart';
 import 'package:result_ease/screen/lecture/add_result.dart';
 import 'package:result_ease/screen/lecture/batch_list.dart';
+import 'package:result_ease/screen/lecture/edite_result.dart';
 import 'package:result_ease/screen/lecture/profile_lecture.dart';
 import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/menu_card.dart';
@@ -51,7 +53,11 @@ class _HomeLectureState extends State<HomeLecture> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>  BatchList()));}, icon: Icons.list_alt_rounded, title: "View"),
-            CustomCard(onTap: () {}, icon: Icons.edit_rounded, title: "Edite"),
+            CustomCard(onTap: () {
+
+                Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const EditeResult()));
+            }, icon: Icons.edit_rounded, title: "Edite"),
             CustomCard(
                 onTap: () {
                   Navigator.push(context,
@@ -59,7 +65,10 @@ class _HomeLectureState extends State<HomeLecture> {
                 },
                 icon: Icons.account_box_rounded,
                 title: "Profile"),
-            CustomCard(onTap: () {}, icon: Icons.grade, title: "Batch"),
+            CustomCard(onTap: () {
+               Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const AddNewBatch()));
+            }, icon: Icons.grade, title: "Batch"),
           ],
         ),
         Positioned(

@@ -1,39 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:result_ease/screen/lecture/add_batch.dart';
+import 'package:result_ease/widgets/result_view_list_item.dart';
 
-import '../../models/batch.dart';
+import '../../models/result.dart';
 import '../../utils/app_colors.dart';
-import '../../widgets/batch_list_item.dart';
 import '../../widgets/custom_back_button.dart';
 
-class BatchList extends StatefulWidget {
-  const BatchList({super.key});
+class ResultView extends StatefulWidget {
+  const ResultView({super.key});
 
   @override
-  State<BatchList> createState() => _BatchListState();
+  State<ResultView> createState() => _ResultViewState();
 }
 
-class _BatchListState extends State<BatchList> {
+class _ResultViewState extends State<ResultView> {
 
-  void _addNewBatch(){
-    Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const AddNewBatch()));
-  }
-  final List<Batch> batches = [
-    Batch(batch: '16/17 COM', semester: '1.1'),
-    Batch(batch: '16/17 PS', semester: '1.1'),
-    Batch(batch: '16/17 COM', semester: '1.2'),
-    Batch(batch: '16/17 PS', semester: '1.2'),
-    Batch(batch: '16/17 COM', semester: '1.1'),
-    Batch(batch: '16/17 PS', semester: '1.1'),
-    Batch(batch: '16/17 COM', semester: '1.2'),
-    Batch(batch: '16/17 PS', semester: '1.2'),
-    Batch(batch: '16/17 COM', semester: '1.1'),
-    Batch(batch: '16/17 PS', semester: '1.1'),
-    Batch(batch: '16/17 COM', semester: '1.2'),
-    Batch(batch: '16/17 PS', semester: '1.2'),
-    // Add more batches as needed
+   final List<Result> _students = [
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    Result(subject: 'Software Engineering', grade: 'C'),
+    // Add more _students as needed
   ];
   @override
   Widget build(BuildContext context) {
@@ -51,30 +49,30 @@ class _BatchListState extends State<BatchList> {
           padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
           child: Column(
             children: [
-              Row(
+             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Batch",
+                    "Subject",
                     style: Theme.of(context).textTheme.headline2,
                   ),
                   const SizedBox(
                     width: 50,
                   ),
                   Text(
-                    "Semester",
+                    "Grade",
                     style: Theme.of(context).textTheme.headline2,
                   )
                 ],
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: batches.length,
+                  itemCount: _students.length,
                   itemBuilder: (context, index) {
-                    return BatchListItem(
+                    return ResultViewItem(
                       
-                      batch: batches[index].batch,
-                      semester: batches[index].semester,
+                      subject: _students[index].subject,
+                      grade: _students[index].grade,
                     );
                   },
                 ),
@@ -91,8 +89,6 @@ class _BatchListState extends State<BatchList> {
             height: 100, // Adjust the height as needed
           ),
         ),
-
-        
         CustomBackButton(
             onPressed: () {
               Navigator.pop(context);
@@ -100,12 +96,7 @@ class _BatchListState extends State<BatchList> {
           ),
         
       ]),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addNewBatch,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
+  
   }
 }

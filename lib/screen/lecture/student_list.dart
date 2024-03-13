@@ -44,21 +44,9 @@ class _StudentListState extends State<StudentList> {
           padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Student",
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                  Text(
-                    "Semester",
-                    style: Theme.of(context).textTheme.headline2,
-                  )
-                ],
+              Text(
+                "Student",
+                style: Theme.of(context).textTheme.headline2,
               ),
               Expanded(
                 child: ListView.builder(

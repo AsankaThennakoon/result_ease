@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:result_ease/screen/lecture/result.dart';
+import 'package:result_ease/screen/lecture/result_view.dart';
 
 import '../utils/app_colors.dart';
 
@@ -20,7 +20,7 @@ class _StudenListItemState extends State<StudenListItem> {
         // Navigate to another screen here
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Result()),
+          MaterialPageRoute(builder: (context) => ResultView()),
         );
       },
       child: Container(
