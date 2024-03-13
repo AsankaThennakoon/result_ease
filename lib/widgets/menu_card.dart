@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:result_ease/utils/colors.dart';
+import 'package:result_ease/utils/app_colors.dart';
 
 class CustomCard extends StatelessWidget {
   final Function onTap;

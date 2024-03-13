@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/parser.dart';
-import 'package:result_ease/utils/colors.dart';
+import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/menu_card.dart';
 
 class HomeLecture extends StatefulWidget {

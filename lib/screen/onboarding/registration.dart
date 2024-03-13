@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:result_ease/screen/onboarding/login.dart';
-import 'package:result_ease/utils/colors.dart';
+import 'package:result_ease/utils/app_colors.dart';
+import 'package:result_ease/widgets/custom_button.dart';
 import 'package:result_ease/widgets/custom_text_field.dart';
 
 class Registration extends StatefulWidget {
@@ -186,28 +187,12 @@ class _RegistrationState extends State<Registration> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              ElevatedButton(
-                                style: const ButtonStyle(
-                                  alignment: Alignment.center,
-                                ),
-                                onPressed: _signUp,
-                                child: const Text(
-                                  "Register",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
+
+                              CustomButton(onClick: _signUp, label: "REGISTER", color: AppColors.buttonColorDark),
+                             
                               const SizedBox(width: 10,),
-                              ElevatedButton(
-                                style: const ButtonStyle(
-                                  
-                                  alignment: Alignment.center,
-                                ),
-                                onPressed: _cancle,
-                                child: const Text(
-                                  "Cancle",
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              ),
+                               CustomButton(onClick: _cancle, label: "CANCEL", color: AppColors.accentColor),
+                             
                             ],
                           ),
                           const SizedBox(

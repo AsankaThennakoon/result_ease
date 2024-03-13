@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:result_ease/screen/lecture/home_lecture.dart';
 import 'package:result_ease/screen/onboarding/registration.dart';
-import 'package:result_ease/utils/colors.dart';
+import 'package:result_ease/utils/app_colors.dart';
+import 'package:result_ease/widgets/custom_button.dart';
 import 'package:result_ease/widgets/custom_text_field.dart';
 
 class Login extends StatefulWidget {
@@ -118,16 +119,11 @@ class _LoginState extends State<Login> {
                           ),
                           _isLoading
                               ? const CircularProgressIndicator()
-                              : ElevatedButton(
-                                  style: const ButtonStyle(
-                                    alignment: Alignment.center,
-                                  ),
-                                  onPressed: _login,
-                                  child: const Text(
-                                    "LOGIN",
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ),
+                              : CustomButton(
+                                  onClick: _login,
+                                  label: "LOGIN",
+                                  color: AppColors.buttonColorDark),
+                    
                           const SizedBox(
                             height: 10,
                           ),

@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
                       Center(
                           child: Text("Result Ease",
-                              style: Theme.of(context).textTheme.headline6)),
+                              style: Theme.of(context).textTheme.headline1)),
 
                       Positioned(
                         top: (MediaQuery.of(context).size.height) / 2,
