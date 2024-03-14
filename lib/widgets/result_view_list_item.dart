@@ -28,7 +28,7 @@ class _ResultViewItemState extends State<ResultViewItem> {
         ),
       ),
       height: 60,
-      padding: const EdgeInsets.fromLTRB(19, 15, 19, 15),
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       child: Row(
         children: [
           Expanded(
@@ -37,24 +37,22 @@ class _ResultViewItemState extends State<ResultViewItem> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
                 widget.subject,
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.headline4,
                 textAlign: TextAlign.center,
               ),
             ),
           ),
-          Expanded(
-            
-            child: Container(
-              width: 38,
-              height: 38,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(19),
-                  color: AppColors.buttonColorDark),
-              child: Text(
-                widget.grade,
-                style: Theme.of(context).textTheme.headline3,
-                textAlign: TextAlign.center,
-              ),
+          Container(
+            alignment: Alignment.center,
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: AppColors.buttonColorDark),
+            child: Text(
+              widget.grade,
+              style: Theme.of(context).textTheme.headline3,
+              textAlign: TextAlign.center,
             ),
           ),
           Expanded(

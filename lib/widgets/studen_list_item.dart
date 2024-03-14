@@ -25,6 +25,7 @@ class _StudenListItemState extends State<StudenListItem> {
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 6),
+        padding:const EdgeInsets.fromLTRB(10, 0, 10, 0),
         decoration: BoxDecoration(
           color: AppColors.backgroundColor,
           borderRadius: BorderRadius.circular(25),
@@ -35,15 +36,18 @@ class _StudenListItemState extends State<StudenListItem> {
         ),
         height: 60,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               "assets/icons/student.png",
               width: 41,
               height: 30,
+              scale: 0.75,
             ),
             Expanded(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(

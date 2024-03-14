@@ -33,8 +33,9 @@ class BatchListItem extends StatelessWidget {
           ),
         ),
         height: 60,
-        padding: const EdgeInsets.fromLTRB(19, 15, 19, 15),
+        padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset(
               "assets/icons/batch.png",
@@ -46,7 +47,7 @@ class BatchListItem extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   batch,
-                  style: Theme.of(context).textTheme.headline2,
+                  style: Theme.of(context).textTheme.headline4,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -55,7 +56,7 @@ class BatchListItem extends StatelessWidget {
               width: 40,
               child: Text(
                 semester,
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.headline4,
                 textAlign: TextAlign.center,
               ),
             )
