@@ -64,6 +64,6 @@ class _HomeListItemState extends State<HomeListItem> {
         ),
       ),
     );
-    ;
+    
   }
 }

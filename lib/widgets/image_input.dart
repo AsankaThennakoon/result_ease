@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:result_ease/utils/app_colors.dart';
-import 'package:result_ease/widgets/custom_button.dart';
 
 class ImageInput extends StatefulWidget {
   final String title;

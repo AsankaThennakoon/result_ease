@@ -26,6 +26,7 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmePassword = TextEditingController();
 
+  // ignore: unused_field
   File? _pickedProfilePic;
   void _selectedProfilePic(File profilePic) {
     _pickedProfilePic = profilePic;

@@ -68,6 +68,6 @@ class _StudenListItemState extends State<StudenListItem> {
         ),
       ),
     );
-    ;
+    
   }
 }

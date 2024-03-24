@@ -44,7 +44,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             borderSide: BorderSide(
-              width: 2,
+             width: 1,
               color: widget.controller.text.isEmpty
                   ? AppColors.buttonColorDark // Change to your desired color
                   : AppColors.headingTextColor, // Change to your desired color
@@ -53,7 +53,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             borderSide: BorderSide(
-              width: 2,
+             width: 1,
               color: widget.controller.text.isEmpty
                   ?  AppColors.buttonColorDark// Change to your desired color
                   : AppColors.headingTextColor, // Change to your desired color
@@ -62,7 +62,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             borderSide: BorderSide(
-              width: 2,
+             width: 1,
               color: widget.controller.text.isEmpty
                   ? AppColors.buttonColorDark// Change to your desired color
                   : AppColors.headingTextColor, // Change to your desired color
@@ -71,7 +71,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           errorBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             borderSide: BorderSide(
-              width: 2,
+             width: 1,
               color: widget.controller.text.isEmpty
                   ? AppColors.accentColor // Change to your desired color
                   : AppColors.headingTextColor, // Change to your desired color

@@ -4,7 +4,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/students/home_list_item.dart';
-import 'package:result_ease/widgets/students/student_result_view_item.dart';
 
 class StudentHome extends StatefulWidget {
   const StudentHome({super.key});

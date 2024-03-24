@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/parser.dart';
 import 'package:result_ease/screen/lecture/add_batch.dart';
 import 'package:result_ease/screen/lecture/add_result.dart';
 import 'package:result_ease/screen/lecture/batch_list.dart';
