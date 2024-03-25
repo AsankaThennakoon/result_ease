@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:result_ease/screen/onboarding/splash.dart';
 import 'package:result_ease/utils/app_theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 
-
-
-void main() {
+void main() async{
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const MyApp());
 }
 
