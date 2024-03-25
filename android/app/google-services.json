@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "495265433358",
+    "project_id": "result-ease",
+    "storage_bucket": "result-ease.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495265433358:android:e6582f41c6f43e82c4795f",
+        "android_client_info": {
+          "package_name": "com.example.result_ease"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_SzDIQ8OMi6E-Y7xGWjml2ral0KwTWwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

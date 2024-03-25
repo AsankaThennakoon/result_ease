@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:result_ease/screen/onboarding/login.dart';
@@ -5,6 +7,9 @@ import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/custom_back_button.dart';
 import 'package:result_ease/widgets/custom_button.dart';
 import 'package:result_ease/widgets/custom_text_field.dart';
+import '../../helpers/dialog_helper.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -19,43 +24,24 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmePassword = TextEditingController();
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      ),
-    );
+
+  void _signUp() async {
+     final universityCredentials = await _firebase.createUserWithEmailAndPassword(
+            email: _email.value.toString(), password: _password.value.toString());
+
+            
+        await FirebaseFirestore.instance
+            .collection('university')
+            .doc(universityCredentials.user!.uid)
+            .set({
+          'university_name': _universityName,
+          'faculty': _faculty,
+          'department': _department,
+        });
+
+    DialogHelper.showErrorDialog(context, "Sign-up failed. Please try again.");
   }
 
-  void _showSuccessDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Saved successfully !'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      ),
-    );
-  }
-
-  void _signUp() async {}
   void _cancle() async {}
 
   @override

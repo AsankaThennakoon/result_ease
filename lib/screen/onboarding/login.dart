@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:result_ease/screen/lecture/home_lecture.dart';
@@ -7,6 +8,9 @@ import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/custom_button.dart';
 import 'package:result_ease/widgets/custom_text_field.dart';
 
+
+
+final _firebase = FirebaseAuth.instance;
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
   @override
