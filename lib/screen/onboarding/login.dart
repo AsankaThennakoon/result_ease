@@ -9,9 +9,8 @@ import 'package:result_ease/widgets/custom_text_field.dart';
 
 import '../../helpers/dialog_helper.dart';
 
-
-
 final _firebase = FirebaseAuth.instance;
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
   @override
@@ -22,50 +21,52 @@ class _LoginState extends State<Login> {
   final TextEditingController _userName = TextEditingController();
   final TextEditingController _password = TextEditingController();
   var _isLoading = false;
-  
 
   void _login() async {
-  setState(() {
-    _isLoading = true;
-  });
+    setState(() {
+      _isLoading = true;
+    });
 
-  try {
-    final userCredentials = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: _userName.text, password: _password.text);
+    try {
+      final userCredentials = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: _userName.text, password: _password.text);
 
-            setState(() {
-    _isLoading = false;
-  });
-    
-    // Handle successful login - navigate to next screen or show success message
-  } catch (e) {
-    String errorMessage = "Login failed. Please try again.";
-    
-    // Customize error message based on the specific error, if needed
-    if (e is FirebaseAuthException) {
-      switch (e.code) {
-        case 'user-not-found':
-          errorMessage = 'No user found with this email.';
-          break;
-        case 'wrong-password':
-          errorMessage = 'Incorrect password provided.';
-          break;
-        case 'invalid-email':
-          errorMessage = 'The email address is not valid.';
-          break;
-        // Handle other FirebaseAuthExceptions as needed
-        default:
-          errorMessage = 'Login failed. Please try again later.';
+      setState(() {
+        _isLoading = false;
+      });
+
+      // Handle successful login - navigate to next screen or show success message
+    } catch (e) {
+      String errorMessage = "Login failed. Please try again.";
+
+      // Customize error message based on the specific error, if needed
+      if (e is FirebaseAuthException) {
+        switch (e.code) {
+          case 'user-not-found':
+            errorMessage = 'No user found with this email.';
+            break;
+          case 'wrong-password':
+            errorMessage = 'Incorrect password provided.';
+            break;
+          case 'invalid-email':
+            errorMessage = 'The email address is not valid.';
+            break;
+          // Handle other FirebaseAuthExceptions as needed
+          default:
+            errorMessage = 'Login failed. Please try again later.';
+        }
       }
-    }
-    
-    // Handle other exceptions if needed
 
-    DialogHelper.showErrorDialog(context, errorMessage);
+      // Handle other exceptions if needed
+
+      DialogHelper.showErrorDialog(context, errorMessage);
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
-}
-  
+
   void _onLongPress() async {
     setState(() {
       _isLoading = false;
@@ -73,9 +74,6 @@ class _LoginState extends State<Login> {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const StudentHome()));
   }
-
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -159,18 +157,16 @@ class _LoginState extends State<Login> {
                                   onLongPress: _onLongPress,
                                   label: "LOGIN",
                                   color: AppColors.buttonColorDark),
-                    
                           const SizedBox(
                             height: 10,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                               Text(
-                                "Did not have an account?  ",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyMedium
-                              ),
+                              Text("Did not have an account?  ",
+                                  textAlign: TextAlign.center,
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
                               InkWell(
                                 hoverColor: Colors.black,
                                 focusColor: Colors.grey,

@@ -24,9 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 5));
 
     // Navigate to the login screen
-    _navigatorKey.currentState!.pushReplacement(
-      MaterialPageRoute(builder: (context) => Login()),
-    );
+    // _navigatorKey.currentState!.pushReplacement(
+    //   MaterialPageRoute(builder: (context) => Login()),
+    // );
   }
 
   @override

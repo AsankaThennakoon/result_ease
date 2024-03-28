@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:result_ease/screen/lecture/home_lecture.dart';
 import 'package:result_ease/screen/onboarding/login.dart';
 import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/custom_back_button.dart';
@@ -24,12 +25,14 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmePassword = TextEditingController();
+
   var _isLoading = false;
 
   void _signUp() async {
     setState(() {
       _isLoading = true;
     });
+
     try {
       final universityCredentials = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
@@ -43,15 +46,19 @@ class _RegistrationState extends State<Registration> {
         'faculty': _faculty.text,
         'department': _department.text,
       });
+
       setState(() {
         _isLoading = false;
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Successfully Registed "),
+          content: Text("Successfully Registered"),
         ),
       );
+
+      Navigator.of(context).pop();
+
       // Show success message or navigate to the next screen
     } catch (e) {
       String errorMessage = "Sign-up failed. Please try again.";
@@ -77,10 +84,21 @@ class _RegistrationState extends State<Registration> {
       // Handle other exceptions if needed
 
       DialogHelper.showErrorDialog(context, errorMessage);
+
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
-  void _cancle() async {}
+  void _cancle() async {
+    _universityName.clear();
+    _faculty.clear();
+    _department.clear();
+    _email.clear();
+    _password.clear();
+    _confirmePassword.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +212,8 @@ class _RegistrationState extends State<Registration> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              _isLoading
+                              ? const CircularProgressIndicator():
                               CustomButton(
                                   onClick: _signUp,
                                   label: "REGISTER",
