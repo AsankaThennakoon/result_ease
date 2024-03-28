@@ -51,11 +51,9 @@ class _RegistrationState extends State<Registration> {
         _isLoading = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Successfully Registered"),
-        ),
-      );
+      DialogHelper.showSuccessSnackbar(context, "Successfully Registered");
+
+    
 
       Navigator.of(context).pop();
 

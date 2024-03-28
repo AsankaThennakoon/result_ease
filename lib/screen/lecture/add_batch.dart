@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../helpers/dialog_helper.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_back_button.dart';
 import '../../widgets/custom_button.dart';
@@ -20,44 +23,50 @@ class _AddNewBatchState extends State<AddNewBatch> {
   final TextEditingController _batch = TextEditingController();
   final TextEditingController _semester = TextEditingController();
 
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      ),
-    );
-  }
+  var _isLoading=false;
+  
+  final _firebaseAuth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
-  void _showSuccessDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Saved successfully !'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      ),
-    );
-  }
+  void _save() async {
+    setState(() {
+      _isLoading=true;
+    });
+    try {
+      final currentUser = _firebaseAuth.currentUser;
+      if (currentUser != null) {
+        await _firestore.collection('batches').add({
+          'userId': currentUser.uid,
+          'year': _year.text,
+          'batch': _batch.text,
+          'semester': _semester.text,
+          // Add more fields as needed
+        });
+        
+        
+      DialogHelper.showSuccessSnackbar(context, "Successfully Saved");
+      _cancle();
+        
+      } else {
+        
+      DialogHelper.showErrorDialog(context, 'User not logged in!');
+      }
 
-  void _save() async {}
-  void _cancle() async {}
+      
+    } catch (error) {
+
+      DialogHelper.showErrorDialog(context, 'Failed to save batch details.');
+    }
+
+    setState(() {
+      _isLoading=false;
+    });
+  }
+  void _cancle() async {
+     _year.clear();
+  _batch.clear();
+  _semester.clear();
+  }
 
   @override
    Widget build(BuildContext context) {
@@ -145,6 +154,7 @@ class _AddNewBatchState extends State<AddNewBatch> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              _isLoading?CircularProgressIndicator():
                               CustomButton(
                                   onClick: _save,
                                   label: "SAVE",

@@ -1,6 +1,7 @@
 // dialog_helper.dart
 
 import 'package:flutter/material.dart';
+import 'package:result_ease/utils/app_colors.dart';
 
 class DialogHelper {
   static void showErrorDialog(BuildContext context, String message) {
@@ -64,4 +65,14 @@ class DialogHelper {
       ),
     );
   }
+ static void showSuccessSnackbar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 2), // Adjust duration as needed
+      backgroundColor: AppColors.backgroundColor, // Customize background color
+    ),
+  );
+}
+
 }
