@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:result_ease/screen/lecture/home_lecture.dart';
+import 'package:result_ease/screen/onboarding/login.dart';
 import 'package:result_ease/screen/onboarding/splash.dart';
 import 'package:result_ease/utils/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,6 +9,8 @@ import 'firebase_options.dart';
 
 
 void main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
 );
@@ -22,7 +27,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.themeData,
-      home: const SplashScreen(),
+      home:  StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SplashScreen();
+            }
+
+            if (snapshot.hasData) {
+              return const HomeLecture();
+            }
+
+            return const Login();
+          }),
     );
   }
 }

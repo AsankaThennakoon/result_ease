@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:result_ease/screen/lecture/home_lecture.dart';
 import 'package:result_ease/screen/onboarding/registration.dart';
 import 'package:result_ease/screen/student/home_student.dart';
 import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/custom_button.dart';
 import 'package:result_ease/widgets/custom_text_field.dart';
+
+import '../../helpers/dialog_helper.dart';
 
 
 
@@ -21,32 +22,49 @@ class _LoginState extends State<Login> {
   final TextEditingController _userName = TextEditingController();
   final TextEditingController _password = TextEditingController();
   var _isLoading = false;
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      ),
-    );
-  }
+  
 
   void _login() async {
-    setState(() {
-      _isLoading = false;
-    });
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomeLecture()));
-  }
+  setState(() {
+    _isLoading = true;
+  });
 
+  try {
+    final userCredentials = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: _userName.text, password: _password.text);
+
+            setState(() {
+    _isLoading = false;
+  });
+    
+    // Handle successful login - navigate to next screen or show success message
+  } catch (e) {
+    String errorMessage = "Login failed. Please try again.";
+    
+    // Customize error message based on the specific error, if needed
+    if (e is FirebaseAuthException) {
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found with this email.';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Incorrect password provided.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'The email address is not valid.';
+          break;
+        // Handle other FirebaseAuthExceptions as needed
+        default:
+          errorMessage = 'Login failed. Please try again later.';
+      }
+    }
+    
+    // Handle other exceptions if needed
+
+    DialogHelper.showErrorDialog(context, errorMessage);
+  }
+}
   
   void _onLongPress() async {
     setState(() {

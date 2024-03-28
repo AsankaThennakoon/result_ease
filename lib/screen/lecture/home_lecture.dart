@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:result_ease/screen/lecture/add_batch.dart';
 import 'package:result_ease/screen/lecture/add_result.dart';
@@ -8,6 +8,8 @@ import 'package:result_ease/screen/lecture/edite_result.dart';
 import 'package:result_ease/screen/lecture/profile_lecture.dart';
 import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/menu_card.dart';
+
+import '../../helpers/dialog_helper.dart';
 
 class HomeLecture extends StatefulWidget {
   const HomeLecture({super.key});
@@ -47,15 +49,21 @@ class _HomeLectureState extends State<HomeLecture> {
                 icon: Icons.add,
                 title: "New Result"),
             CustomCard(
-                onTap: () {Navigator.push(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BatchList()));
+                },
+                icon: Icons.list_alt_rounded,
+                title: "View"),
+            CustomCard(
+                onTap: () {
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>  BatchList()));}, icon: Icons.list_alt_rounded, title: "View"),
-            CustomCard(onTap: () {
-
-                Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const EditeResult()));
-            }, icon: Icons.edit_rounded, title: "Edite"),
+                          builder: (context) => const EditeResult()));
+                },
+                icon: Icons.edit_rounded,
+                title: "Edite"),
             CustomCard(
                 onTap: () {
                   Navigator.push(context,
@@ -63,10 +71,15 @@ class _HomeLectureState extends State<HomeLecture> {
                 },
                 icon: Icons.account_box_rounded,
                 title: "Profile"),
-            CustomCard(onTap: () {
-               Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const AddNewBatch()));
-            }, icon: Icons.grade, title: "Batch"),
+            CustomCard(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AddNewBatch()));
+                },
+                icon: Icons.grade,
+                title: "Batch"),
           ],
         ),
         Positioned(
@@ -75,7 +88,14 @@ class _HomeLectureState extends State<HomeLecture> {
           child: InkWell(
             child: const Icon(Icons.close),
             onTap: () {
-              Navigator.of(context).pop();
+              DialogHelper.showConfirmationDialog(
+                context,
+                'Are you sure you want to log out?',
+                () {
+                  FirebaseAuth.instance.signOut();
+                  // Navigate to login screen or perform any other actions after logout
+                },
+              );
             },
           ),
         ),

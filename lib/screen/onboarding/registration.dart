@@ -24,22 +24,60 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmePassword = TextEditingController();
+  var _isLoading = false;
 
   void _signUp() async {
-     final universityCredentials = await _firebase.createUserWithEmailAndPassword(
-            email: _email.value.toString(), password: _password.value.toString());
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final universityCredentials = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _email.text, password: _password.text);
 
-            
-        await FirebaseFirestore.instance
-            .collection('university')
-            .doc(universityCredentials.user!.uid)
-            .set({
-          'university_name': _universityName,
-          'faculty': _faculty,
-          'department': _department,
-        });
+      await FirebaseFirestore.instance
+          .collection('university')
+          .doc(universityCredentials.user!.uid)
+          .set({
+        'university_name': _universityName.text,
+        'faculty': _faculty.text,
+        'department': _department.text,
+      });
+      setState(() {
+        _isLoading = false;
+      });
 
-    DialogHelper.showErrorDialog(context, "Sign-up failed. Please try again.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Successfully Registed "),
+        ),
+      );
+      // Show success message or navigate to the next screen
+    } catch (e) {
+      String errorMessage = "Sign-up failed. Please try again.";
+
+      // Customize error message based on the specific error, if needed
+      if (e is FirebaseAuthException) {
+        switch (e.code) {
+          case 'email-already-in-use':
+            errorMessage = 'The email address is already in use.';
+            break;
+          case 'weak-password':
+            errorMessage = 'The password provided is too weak.';
+            break;
+          case 'invalid-email':
+            errorMessage = 'The email address is not valid.';
+            break;
+          // Handle other FirebaseAuthExceptions as needed
+          default:
+            errorMessage = 'Sign-up failed. Please try again later.';
+        }
+      }
+
+      // Handle other exceptions if needed
+
+      DialogHelper.showErrorDialog(context, errorMessage);
+    }
   }
 
   void _cancle() async {}
