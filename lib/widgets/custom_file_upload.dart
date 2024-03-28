@@ -2,26 +2,31 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:result_ease/utils/app_colors.dart';
 
-class CustomFileUploadField extends StatelessWidget {
-  final String labelName;
-  final TextEditingController controller;
+class CustomFileUploadField extends StatefulWidget {
   final double width;
   final double height;
+  final void Function(String)? onFileSelected; // Callback function to pass file path
 
-  const CustomFileUploadField({
+  CustomFileUploadField({
     Key? key,
-    required this.labelName,
-    required this.controller,
     this.height = 50,
     this.width = double.maxFinite,
+    this.onFileSelected, // Initialize the callback function
   }) : super(key: key);
 
+  @override
+  State<CustomFileUploadField> createState() => _CustomFileUploadFieldState();
+}
+
+class _CustomFileUploadFieldState extends State<CustomFileUploadField> {
+  String? fileName = "Upload Result Excel";
+  
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 30, right: 30, top: 15),
-      width: width,
-      height: height,
+      width: widget.width,
+      height: widget.height,
       child: Row(
         children: [
           Expanded(
@@ -31,8 +36,8 @@ class CustomFileUploadField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
                 border: Border.all(
                   width: 2,
-                  color: controller.text.isEmpty
-                      ? AppColors.buttonColorDark
+                  color: fileName == null
+                      ? AppColors.accentColor
                       : AppColors.headingTextColor,
                 ),
                 color: Colors.white,
@@ -41,7 +46,7 @@ class CustomFileUploadField extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      labelName,
+                      fileName == null ? "Upload Result Excel" : fileName!,
                       style: const TextStyle(
                           color: AppColors.headingTextColor, fontSize: 17),
                     ),
@@ -67,7 +72,18 @@ class CustomFileUploadField extends StatelessWidget {
     if (result != null) {
       String? filePath = result.files.single.path;
       if (filePath != null) {
-        controller.text = filePath;
+        // Extract file name from the file path
+        String fileNameTemp =
+            filePath.split('/').last; // Assuming the file path separator is '/'
+        // Update the label name with the file name
+        setState(() {
+          fileName = fileNameTemp;
+        });
+
+        // Call the callback function with the file path
+        if (widget.onFileSelected != null) {
+          widget.onFileSelected!(filePath);
+        }
       }
     }
   }

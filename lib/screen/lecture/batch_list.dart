@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:result_ease/screen/lecture/add_batch.dart';
@@ -15,26 +17,13 @@ class BatchList extends StatefulWidget {
 }
 
 class _BatchListState extends State<BatchList> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void _addNewBatch(){
-    Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const AddNewBatch()));
+  void _addNewBatch() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const AddNewBatch()));
   }
-  final List<Batch> batches = [
-    Batch(batch: '16/17 COM', semester: '1.1'),
-    Batch(batch: '16/17 PS', semester: '1.1'),
-    Batch(batch: '16/17 COM', semester: '1.2'),
-    Batch(batch: '16/17 PS', semester: '1.2'),
-    Batch(batch: '16/17 COM', semester: '1.1'),
-    Batch(batch: '16/17 PS', semester: '1.1'),
-    Batch(batch: '16/17 COM', semester: '1.2'),
-    Batch(batch: '16/17 PS', semester: '1.2'),
-    Batch(batch: '16/17 COM', semester: '1.1'),
-    Batch(batch: '16/17 PS', semester: '1.1'),
-    Batch(batch: '16/17 COM', semester: '1.2'),
-    Batch(batch: '16/17 PS', semester: '1.2'),
-    // Add more batches as needed
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,13 +57,37 @@ class _BatchListState extends State<BatchList> {
                 ],
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: batches.length,
-                  itemBuilder: (context, index) {
-                    return BatchListItem(
-                      
-                      batch: batches[index].batch,
-                      semester: batches[index].semester,
+                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                  stream: FirebaseFirestore.instance
+                      .collection('batches')
+                      .where('userId', isEqualTo: _auth.currentUser?.uid) //
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    final List<Batch> batches = [];
+                    final data = snapshot.data;
+                    if (data != null) {
+                      for (final doc in data.docs) {
+                        batches.add(Batch(
+                            batch: doc['batch'] ?? '',
+                            semester: doc['semester'] ?? '',
+                            year: doc['year'] ?? ''
+                            // Add more fields as needed
+                            ));
+                      }
+                    }
+                    return ListView.builder(
+                      itemCount: batches.length,
+                      itemBuilder: (context, index) {
+                        return BatchListItem(
+                          batch: batches[index].year + batches[index].batch,
+                          semester: batches[index].semester,
+                        );
+                      },
                     );
                   },
                 ),
@@ -91,16 +104,12 @@ class _BatchListState extends State<BatchList> {
             height: 100, // Adjust the height as needed
           ),
         ),
-
-        
         CustomBackButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ]),
-
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewBatch,
         tooltip: 'Increment',
