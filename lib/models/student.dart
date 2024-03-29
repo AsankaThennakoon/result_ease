@@ -4,4 +4,9 @@ class Student{
   final String indexNo;
 
   Student({required this.name,required this.indexNo});
+
+  static fromJson(Map<String, dynamic> data) { return Student(
+      name: data['name'] ?? '',
+      indexNo: data['indexNo'] ?? '',
+    );}
 }

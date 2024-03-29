@@ -76,6 +76,7 @@ class _BatchListState extends State<BatchList> {
                             batch: doc['batch'] ?? '',
                             semester: doc['semester'] ?? '',
                             year: doc['year'] ?? ''
+                            
                             // Add more fields as needed
                             ));
                       }
@@ -84,7 +85,8 @@ class _BatchListState extends State<BatchList> {
                       itemCount: batches.length,
                       itemBuilder: (context, index) {
                         return BatchListItem(
-                          batch: batches[index].year + batches[index].batch,
+                          year:batches[index].year ,
+                          batch:  batches[index].batch,
                           semester: batches[index].semester,
                         );
                       },

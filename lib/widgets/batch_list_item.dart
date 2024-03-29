@@ -5,9 +5,11 @@ import 'package:result_ease/utils/app_colors.dart';
 class BatchListItem extends StatelessWidget {
   final String batch;
   final String semester;
+  final String year;
 
   const BatchListItem({
     Key? key,
+    required this.year,
     required this.batch,
     required this.semester,
   }) : super(key: key);
@@ -19,7 +21,9 @@ class BatchListItem extends StatelessWidget {
         // Navigate to another screen here
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => StudentList()),
+          MaterialPageRoute(builder: (context) => StudentList( year: year,
+              batch: batch,
+              semester: semester,)),
         );
       },
       child: Container(
@@ -46,7 +50,7 @@ class BatchListItem extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  batch,
+                  '$year $batch',
                   style: Theme.of(context).textTheme.headline4,
                   textAlign: TextAlign.center,
                 ),
