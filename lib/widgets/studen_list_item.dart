@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:result_ease/models/results.dart';
 import 'package:result_ease/screen/lecture/result_view.dart';
 
 import '../utils/app_colors.dart';
 
 class StudenListItem extends StatefulWidget {
-  final String name;
-  final String indexNo;
-  const StudenListItem({super.key, required this.name, required this.indexNo});
+  final Results result;
+  const StudenListItem({super.key, required this.result});
 
   @override
   State<StudenListItem> createState() => _StudenListItemState();
@@ -20,7 +20,7 @@ class _StudenListItemState extends State<StudenListItem> {
         // Navigate to another screen here
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ResultView()),
+          MaterialPageRoute(builder: (context) => ResultView(results: widget.result,)),
         );
       },
       child: Container(
@@ -51,12 +51,12 @@ class _StudenListItemState extends State<StudenListItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.name,
+                    widget.result.name,
                     style: Theme.of(context).textTheme.headline4,
                     textAlign: TextAlign.center,
                   ),
                    Text(
-                      widget.indexNo,
+                      widget.result.indexNo,
                       style: Theme.of(context).textTheme.headline5,
                       textAlign: TextAlign.center,
                     ),

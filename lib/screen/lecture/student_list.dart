@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:result_ease/models/results.dart';
 import 'package:result_ease/widgets/studen_list_item.dart';
 import '../../models/student.dart';
 import '../../utils/app_colors.dart';
@@ -36,8 +37,10 @@ class _StudentListState extends State<StudentList> {
         .get();
 
     List students = snapshot.docs.map((doc) => Student.fromJson(doc.data())).toList();
-    print(students.first.toString());
-    return students;
+    List results = snapshot.docs.map((doc) => Results.fromJson(doc.data())).toList();
+    
+    // return students;
+    return results;
   }
 
   @override
@@ -74,8 +77,9 @@ class _StudentListState extends State<StudentList> {
                           itemCount: snapshot.data?.length ?? 0,
                           itemBuilder: (context, index) {
                             return StudenListItem(
-                              name: snapshot.data![index].name,
-                              indexNo: snapshot.data![index].indexNo,
+                             
+                              result: snapshot.data![index],
+                             
                             );
                           },
                         );

@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:result_ease/helpers/dialog_helper.dart';
 
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_back_button.dart';
@@ -23,55 +27,82 @@ class _ProfileState extends State<Profile> {
   final TextEditingController _faculty = TextEditingController();
   final TextEditingController _department = TextEditingController();
   final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
-  final TextEditingController _confirmePassword = TextEditingController();
 
-  // ignore: unused_field
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   File? _pickedProfilePic;
+  String ? _imageURL;
   void _selectedProfilePic(File profilePic) {
     _pickedProfilePic = profilePic;
   }
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      ),
-    );
-  }
-
-  void _showSuccessDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Saved successfully !'),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Ok'),
-          )
-        ],
-      ),
-    );
-  }
-
-  void _save() async {}
-  void _cancle() async {}
 
   @override
-   Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    loadUserProfile();
+  }
+
+  void loadUserProfile() async {
+    try {
+      final currentUser = _firebaseAuth.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot userProfileSnapshot = await _firestore
+            .collection('university')
+            .doc(currentUser.uid)
+            .get();
+
+        if (userProfileSnapshot.exists) {
+          setState(() {
+            _universityName.text = userProfileSnapshot['university_name'];
+            _faculty.text = userProfileSnapshot['faculty'];
+            _department.text = userProfileSnapshot['department'];
+            _email.text = currentUser.email ?? '';
+            _imageURL=userProfileSnapshot['image_url']??'';
+          });
+        }
+      }
+    } catch (error) {
+      print("Error loading user profile: $error");
+    }
+  }
+
+  void _save() async {
+    // Implement your save logic here
+
+    try {
+      final currentUser = _firebaseAuth.currentUser;
+      late String imageUrl = "";
+      if (currentUser != null && _pickedProfilePic != null) {
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child('${currentUser.uid}.jpg');
+
+        await storageRef.putFile(_pickedProfilePic!);
+        imageUrl = await storageRef.getDownloadURL();
+      }
+
+      await FirebaseFirestore.instance
+          .collection('university')
+          .doc(currentUser!.uid)
+          .update({
+        'university_name': _universityName.text,
+        'faculty': _faculty.text,
+        'department': _department.text,
+        'image_url': imageUrl
+      });
+    } on FirebaseAuthException catch (error) {
+      DialogHelper.showErrorDialog(context, "Update Faile");
+    }
+  }
+
+  void _cancel() {
+    // Implement your cancel logic here
+  }
+
+  @override
+  Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: PreferredSize(
@@ -127,11 +158,10 @@ class _ProfileState extends State<Profile> {
                     Form(
                       child: Column(
                         children: <Widget>[
-                          
                           const SizedBox(
                             height: 5,
                           ),
-                          ImageInput(_selectedProfilePic, 'Profile PIC'),
+                          ImageInput(_selectedProfilePic, 'Profile PIC',imageUrl: _imageURL,),
                           const SizedBox(
                             height: 10,
                           ),
@@ -152,18 +182,12 @@ class _ProfileState extends State<Profile> {
                             height: 10,
                           ),
                           CustomTextField(
-                              labelName: "Email", controller: _email),
+                              isEditable: false,
+                              labelName: "Email",
+                              controller: _email),
                           const SizedBox(
                             height: 10,
                           ),
-                          CustomTextField(
-                              labelName: "Password", controller: _password),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextField(
-                              labelName: "Confirm Password",
-                              controller: _confirmePassword),
                           const SizedBox(
                             height: 10,
                           ),
@@ -178,7 +202,7 @@ class _ProfileState extends State<Profile> {
                                 width: 10,
                               ),
                               CustomButton(
-                                  onClick: _cancle,
+                                  onClick: _cancel,
                                   label: "CANCEL",
                                   color: AppColors.accentColor),
                             ],
@@ -186,7 +210,6 @@ class _ProfileState extends State<Profile> {
                           const SizedBox(
                             height: 10,
                           ),
-                          
                         ],
                       ),
                     ),
@@ -199,5 +222,4 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
 }

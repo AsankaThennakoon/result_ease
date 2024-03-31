@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:result_ease/screen/lecture/edite_result.dart';
-
 import '../utils/app_colors.dart';
 
 class ResultViewItem extends StatefulWidget {
   final String subject;
   final String grade;
-  const ResultViewItem({super.key, required this.subject, required this.grade});
+ final Function(String) onTap;// Changed the type to VoidCallback
+  const ResultViewItem({
+    Key? key,
+    required this.subject,
+    required this.grade,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   State<ResultViewItem> createState() => _ResultViewItemState();
@@ -23,8 +26,8 @@ class _ResultViewItemState extends State<ResultViewItem> {
         color: AppColors.backgroundColor,
         borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: AppColors.buttonColorDark, // Set border color here
-          width: 1, // Set border width here
+          color: AppColors.buttonColorDark,
+          width: 1,
         ),
       ),
       height: 60,
@@ -47,8 +50,9 @@ class _ResultViewItemState extends State<ResultViewItem> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: AppColors.buttonColorDark),
+              borderRadius: BorderRadius.circular(20),
+              color: AppColors.buttonColorDark,
+            ),
             child: Text(
               widget.grade,
               style: Theme.of(context).textTheme.headline3,
@@ -58,18 +62,14 @@ class _ResultViewItemState extends State<ResultViewItem> {
           Expanded(
             flex: 1,
             child: InkWell(
-              onTap: _editeResult,
+              onTap: () {
+                widget.onTap(widget.subject); // Invoke the callback function with subject
+              },
               child: const Icon(Icons.edit, color: AppColors.buttonColorDark),
             ),
           ),
         ],
       ),
     );
-  }
-
-  void _editeResult() {
-
-      Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const EditeResult()));
   }
 }

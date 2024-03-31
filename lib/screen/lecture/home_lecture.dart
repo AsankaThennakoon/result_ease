@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:result_ease/screen/lecture/add_batch.dart';
 import 'package:result_ease/screen/lecture/add_result.dart';
 import 'package:result_ease/screen/lecture/batch_list.dart';
+import 'package:result_ease/screen/lecture/edite_restult_with_filters.dart';
 import 'package:result_ease/screen/lecture/edite_result.dart';
 import 'package:result_ease/screen/lecture/profile_lecture.dart';
 import 'package:result_ease/utils/app_colors.dart';
@@ -60,7 +61,7 @@ class _HomeLectureState extends State<HomeLecture> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const EditeResult()));
+                          builder: (context) => const EditResultsWithFilters()));
                 },
                 icon: Icons.edit_rounded,
                 title: "Edite"),

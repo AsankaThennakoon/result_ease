@@ -1,80 +1,85 @@
+import 'package:excel/excel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:result_ease/helpers/dialog_helper.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:result_ease/widgets/custom_drop_down_item.dart';
+import 'package:result_ease/widgets/custom_file_upload.dart';
+import 'dart:io';
 
-import '../../models/results.dart';
+import '../../helpers/dialog_helper.dart';
 import '../../utils/app_colors.dart';
 import '../../widgets/custom_back_button.dart';
 import '../../widgets/custom_button.dart';
-import '../../widgets/custom_text_field.dart';
 
-class EditeResult extends StatefulWidget {
-  final Results result;
-  final String subjectCode;
-  const EditeResult(
-      {super.key, required this.result, required this.subjectCode});
+class EditResultsWithFilters extends StatefulWidget {
+  const EditResultsWithFilters({super.key});
 
   @override
-  State<EditeResult> createState() => _EditeResultState();
+  State<EditResultsWithFilters> createState() => _EditResultsWithFiltersState();
 }
 
-class _EditeResultState extends State<EditeResult> {
-  final TextEditingController _studentName = TextEditingController();
-  final TextEditingController _indexNumber = TextEditingController();
-  final TextEditingController _year = TextEditingController();
-  final TextEditingController _semester = TextEditingController();
-  final TextEditingController _subject = TextEditingController();
-  final TextEditingController _grade = TextEditingController();
+class _EditResultsWithFiltersState extends State<EditResultsWithFilters> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  FirebaseFirestore firestore =
-      FirebaseFirestore.instance; // Instance of Firestore
+  final TextEditingController _year = TextEditingController();
+  final TextEditingController _batch = TextEditingController();
+  final TextEditingController _semester = TextEditingController();
+
+  List<String> _yearList = [];
+  List<String> _batchList = [];
+  List<String> _semesterList = [];
+ 
+  final _firebaseAuth = FirebaseAuth.instance;
+
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _studentName.text = widget.result.name;
-    _indexNumber.text = widget.result.indexNo;
-    _year.text = widget.result.year;
-    _semester.text = widget.result.semester;
-    _subject.text = widget.subjectCode;
-    _grade.text = widget.result.courseData[widget.subjectCode] ?? '';
+    // Load data from Firestore
+    _loadData();
   }
 
-  void _save() async {
-    DialogHelper.showConfirmationDialog(
-        context, "Are you sure you want to save this?", () async {
-      try {
-        QuerySnapshot querySnapshot = await firestore
-            .collection('results')
-            .where('userId', isEqualTo: widget.result.userId)
-            .get();
 
-        if (querySnapshot.docs.isNotEmpty) {
-          DocumentSnapshot doc = querySnapshot.docs.first;
-          await doc.reference.update({
-            'name': _studentName.text,
-            'indexNo': _indexNumber.text,
-            'year': _year.text,
-            'semester': _semester.text,
-            'courseData.${_subject.text}': _grade.text,
-          });
-          DialogHelper.showSuccessSnackbar(
-              context, "Changes saved successfully!");
-               setState(() {});
-        } else {
-          DialogHelper.showErrorDialog(context,
-              'No matching document found for user ID: ${widget.result.userId}');
-        }
-      } catch (error) {
-        DialogHelper.showErrorDialog(context, 'Failed to save changes: $error');
-      }
+  Future<void> _loadData() async {
+    final batchSnapshots = await FirebaseFirestore.instance
+        .collection('batches')
+        .where('userId', isEqualTo: _auth.currentUser?.uid) //
+        .get();
+
+    final years = <String>{};
+    final batches = <String>{};
+    final semesters = <String>{};
+
+    for (final batch in batchSnapshots.docs) {
+      final data = batch.data() as Map<String, dynamic>;
+      years.add(data['year']);
+      batches.add(data['batch']);
+      semesters.add(data['semester']);
+    }
+
+    setState(() {
+      _yearList = years.toList();
+      _batchList = batches.toList();
+      _semesterList = semesters.toList();
     });
   }
 
-  void _cancle() async {Navigator.of(context).pop();}
+  void _save() async {
+   
+  }
+
+  void _cancle() async {
+    setState(() {
+      _year.clear(); // Clear the text in the year controller
+      _batch.clear(); // Clear the text in the batch controller
+      _semester.clear(); // Clear the text in the semester controller
+     
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,47 +139,44 @@ class _EditeResultState extends State<EditeResult> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          const SizedBox(
-                            height: 10,
+                          CustomDropDownItem(
+                            controller: _year,
+                            labelName: "Selected Year",
+                            listValues: _yearList,
                           ),
-                          CustomTextField(
-                              labelName: "Student Name",
-                              controller: _studentName),
-                          const SizedBox(
-                            height: 10,
+                          CustomDropDownItem(
+                            controller: _batch,
+                            labelName: "Selected Batch",
+                            listValues: _batchList,
                           ),
-                          CustomTextField(
-                              labelName: "Index Number",
-                              controller: _indexNumber),
-                          const SizedBox(
-                            height: 10,
+                          CustomDropDownItem(
+                            controller: _semester,
+                            labelName: "Selected Semester",
+                            listValues: _semesterList,
                           ),
-                          CustomTextField(labelName: "Year", controller: _year),
-                          const SizedBox(
-                            height: 10,
+                          CustomDropDownItem(
+                            controller: _semester,
+                            labelName: "Selected Student IndexNo",
+                            listValues: _semesterList,
                           ),
-                          CustomTextField(
-                              labelName: "Semester", controller: _semester),
-                          const SizedBox(
-                            height: 10,
+                          CustomDropDownItem(
+                            controller: _semester,
+                            labelName: "Selected Subject",
+                            listValues: _semesterList,
                           ),
-                          CustomTextField(
-                              labelName: "Subject", controller: _subject),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextField(
-                              labelName: "Grade", controller: _grade),
+                          
                           const SizedBox(
                             height: 10,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CustomButton(
-                                  onClick: _save,
-                                  label: "SAVE",
-                                  color: AppColors.buttonColorDark),
+                              _isLoading
+                                  ? CircularProgressIndicator()
+                                  : CustomButton(
+                                      onClick: _save,
+                                      label: "SAVE",
+                                      color: AppColors.buttonColorDark),
                               const SizedBox(
                                 width: 10,
                               ),

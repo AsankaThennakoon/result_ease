@@ -6,13 +6,15 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final double width;
   final double height;
+  final bool isEditable; // New parameter to decide if the text field is editable
 
   const CustomTextField({
     Key? key,
     required this.labelName,
     required this.controller,
-    this.height=50,
-    this.width=double.maxFinite,
+    this.height = 50,
+    this.width = double.maxFinite,
+    this.isEditable = true, // Default value is set to true for backward compatibility
   }) : super(key: key);
 
   @override
@@ -31,10 +33,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
         style: const TextStyle(color: AppColors.headingTextColor, fontSize: 18, height: 1.5),
         controller: widget.controller,
         keyboardType: TextInputType.emailAddress,
+        enabled: widget.isEditable, // Setting the enabled property based on the flag
         decoration: InputDecoration(
           labelText: widget.labelName,
-          labelStyle:
-              const TextStyle(color:AppColors.headingTextColor, fontSize: 17, height: 1),
+          labelStyle: const TextStyle(color: AppColors.headingTextColor, fontSize: 17, height: 1),
           hintStyle: const TextStyle(color: AppColors.headingTextColor, fontSize: 17),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15.0),
@@ -44,7 +46,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           focusedBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             borderSide: BorderSide(
-             width: 1,
+              width: 1,
               color: widget.controller.text.isEmpty
                   ? AppColors.buttonColorDark // Change to your desired color
                   : AppColors.headingTextColor, // Change to your desired color
@@ -53,25 +55,25 @@ class _CustomTextFieldState extends State<CustomTextField> {
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             borderSide: BorderSide(
-             width: 1,
+              width: 1,
               color: widget.controller.text.isEmpty
-                  ?  AppColors.buttonColorDark// Change to your desired color
+                  ? AppColors.buttonColorDark // Change to your desired color
                   : AppColors.headingTextColor, // Change to your desired color
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             borderSide: BorderSide(
-             width: 1,
+              width: 1,
               color: widget.controller.text.isEmpty
-                  ? AppColors.buttonColorDark// Change to your desired color
+                  ? AppColors.buttonColorDark // Change to your desired color
                   : AppColors.headingTextColor, // Change to your desired color
             ),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: const BorderRadius.all(Radius.circular(25)),
             borderSide: BorderSide(
-             width: 1,
+              width: 1,
               color: widget.controller.text.isEmpty
                   ? AppColors.accentColor // Change to your desired color
                   : AppColors.headingTextColor, // Change to your desired color

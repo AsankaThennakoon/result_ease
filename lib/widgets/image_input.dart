@@ -9,8 +9,8 @@ import 'package:result_ease/utils/app_colors.dart';
 class ImageInput extends StatefulWidget {
   final String title;
   final Function onSelectImage;
-  // ignore: use_key_in_widget_constructors
-  const ImageInput(this.onSelectImage, this.title);
+   final String? imageUrl;
+  const ImageInput(this.onSelectImage, this.title,{this.imageUrl});
   @override
   _ImageInputState createState() => _ImageInputState();
 }
@@ -49,7 +49,9 @@ class _ImageInputState extends State<ImageInput> {
                 ? FileImage(
                     File(_storedImage!.path),
                   )
-                : Image.asset(
+                :(widget.imageUrl != null)
+                  ? NetworkImage(widget.imageUrl!) // Load image from URL if provided
+                  : Image.asset(
                     "assets/images/profile.png",
                  
                     fit: BoxFit.contain,
