@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:result_ease/models/results.dart';
 import 'package:result_ease/widgets/students/student_result_view_item.dart';
 
 import '../../models/result.dart';
@@ -9,30 +10,64 @@ import '../../utils/app_colors.dart';
 import '../../widgets/custom_back_button.dart';
 
 class StudentResultView extends StatefulWidget {
-  const StudentResultView({super.key});
+  final Results results;
+  const StudentResultView({super.key, required this.results});
 
   @override
   State<StudentResultView> createState() => _StudentResultViewState();
 }
 
 class _StudentResultViewState extends State<StudentResultView> {
- 
-   final List<Result> _students = [
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    Result(subject: 'Software Engineering', grade: 'C'),
-    // Add more _students as needed
-  ];
+  late List<Result> _students;
+
+   Map<String, double> gradePointMap = {
+    "A+": 4.0,
+    "A": 4.0,
+    "A-": 3.7,
+    "B+": 3.3,
+    "B": 3.0,
+    "B-": 2.7,
+    "C+": 2.3,
+    "C": 2.0,
+    "C-": 1.7,
+    "D+": 1.3,
+    "D": 1.0,
+    "E": 0.0,
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    _generateResults();
+  }
+
+  void _generateResults() {
+    _students = widget.results.courseData.entries
+        .map((entry) => Result(subject: entry.key, grade: entry.value))
+        .toList();
+
+        print(calculateGPA().toString()+"GPSGPSGPSGPSGSPGPSGJSPGSGPJSPGJSPJSP");
+  }
+
+  double calculateGPA() {
+    double totalCredits = 0;
+    double totalGradePoints = 0;
+
+    for (var entry in widget.results.courseData.entries) {
+      String creditString = entry.key.substring(entry.key.length-2 , entry.key.length-1 );
+      
+      int credits = int.parse(creditString);
+     
+      double gradePoint = gradePointMap[entry.value.trim()] ?? 0.0;
+     
+
+      totalCredits += credits;
+      totalGradePoints += credits * gradePoint;
+    }
+
+    if (totalCredits == 0) return 0.0;
+    return totalGradePoints / totalCredits;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +86,7 @@ class _StudentResultViewState extends State<StudentResultView> {
           padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
           child: Column(
             children: [
-             Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -72,7 +107,6 @@ class _StudentResultViewState extends State<StudentResultView> {
                   itemCount: _students.length,
                   itemBuilder: (context, index) {
                     return StudentResultViewItem(
-                      
                       subject: _students[index].subject,
                       grade: _students[index].grade,
                     );
@@ -92,13 +126,11 @@ class _StudentResultViewState extends State<StudentResultView> {
           ),
         ),
         CustomBackButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ]),
     );
-  
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +8,7 @@ import 'package:result_ease/screen/student/home_student.dart';
 import 'package:result_ease/utils/app_colors.dart';
 import 'package:result_ease/widgets/custom_button.dart';
 import 'package:result_ease/widgets/custom_text_field.dart';
+import 'package:http/http.dart' as http;
 
 import '../../helpers/dialog_helper.dart';
 
@@ -28,9 +31,36 @@ class _LoginState extends State<Login> {
     });
 
     try {
-      final userCredentials = await FirebaseAuth.instance
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:3000/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          'indexNo': _userName.text,
+          'name': _password.text,
+        }),
+      );
+
+      print(response.toString());
+
+      if (response.statusCode == 200) {
+        // Authentication successful, parse the response body for token
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        final String token = data['token'];
+
+        // Sign in with custom token
+        await FirebaseAuth.instance.signInWithCustomToken(token);
+
+        // Navigate to the next screen or perform other actions
+      } else {
+
+         final userCredentials = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: _userName.text, password: _password.text);
+        
+      }
+     
 
       setState(() {
         _isLoading = false;
@@ -38,6 +68,7 @@ class _LoginState extends State<Login> {
 
       // Handle successful login - navigate to next screen or show success message
     } catch (e) {
+      print(e.toString());
       String errorMessage = "Login failed. Please try again.";
 
       // Customize error message based on the specific error, if needed

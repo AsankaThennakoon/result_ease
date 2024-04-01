@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:result_ease/screen/lecture/home_lecture.dart';
 import 'package:result_ease/screen/onboarding/login.dart';
 import 'package:result_ease/screen/onboarding/splash.dart';
+import 'package:result_ease/screen/student/home_student.dart';
 import 'package:result_ease/utils/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -32,8 +33,19 @@ class MyApp extends StatelessWidget {
               return const SplashScreen();
             }
 
-            if (snapshot.hasData) {
-              return const HomeLecture();
+            final user = snapshot.data;
+
+            if (user != null && user.uid.isNotEmpty) {
+              // Check if user is a lecture
+
+              var providerId=user.providerData;
+
+              print(providerId.toString()+"hahahhahahahahahahhah");
+              if (providerId.isNotEmpty){
+                return const HomeLecture();
+              } else {
+                return const StudentHome();
+              }
             }
 
             return const Login();
