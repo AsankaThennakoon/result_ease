@@ -5,7 +5,7 @@ import '../utils/app_colors.dart';
 class ResultViewItem extends StatefulWidget {
   final String subject;
   final String grade;
- final Function(String) onTap;// Changed the type to VoidCallback
+  final Function(String) onTap;// Changed the type to VoidCallback
   const ResultViewItem({
     Key? key,
     required this.subject,

@@ -31,8 +31,13 @@ class _LoginState extends State<Login> {
     });
 
     try {
+
+
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:3000/login'),
+        // Uri.parse('http://10.0.2.2:3000/login'),
+        // Uri.parse('https://result-ease-48092827afc2.herokuapp.com/login'),
+         Uri.parse('https://results-ease-79e6a18734d9.herokuapp.com/login'),
+       
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -42,7 +47,7 @@ class _LoginState extends State<Login> {
         }),
       );
 
-      print(response.toString());
+      print(response.toString()+"hellloo helloo helloooo");
 
       if (response.statusCode == 200) {
         // Authentication successful, parse the response body for token
@@ -57,7 +62,7 @@ class _LoginState extends State<Login> {
 
          final userCredentials = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
-              email: _userName.text, password: _password.text);
+              email: _userName.text.trim(), password: _password.text.trim());
         
       }
      
@@ -68,8 +73,9 @@ class _LoginState extends State<Login> {
 
       // Handle successful login - navigate to next screen or show success message
     } catch (e) {
-      print(e.toString());
+      print(e.toString()+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
       String errorMessage = "Login failed. Please try again.";
+      
 
       // Customize error message based on the specific error, if needed
       if (e is FirebaseAuthException) {
@@ -120,7 +126,7 @@ class _LoginState extends State<Login> {
           height: screenSize.height,
           decoration: BoxDecoration(
               boxShadow: [
-                BoxShadow(color: Colors.blueGrey[200] as Color, blurRadius: 10)
+                BoxShadow(color: const Color.fromARGB(255, 234, 244, 250) as Color, blurRadius: 10)
               ],
               color: Colors.white,
               borderRadius: const BorderRadius.all(
